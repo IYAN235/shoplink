@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopLink</title>
+    <style>
+        /* CSS Variables for Color Palette */
+        :root {
+            --dark: #1a1a1a;
+            --dark-gray: #2d2d2d;
+            --medium-gray: #4a4a4a;
+            --light-gray: #e0e0e0;
+            --orange: #ff7b25;
+            --orange-light: #ff9d5c;
+            --white: #ffffff;
+        }
+
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light-gray);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--orange);
+            transition: color 0.3s;
+        }
+
+        a:hover {
+            color: var(--orange-light);
+        }
+
+        button {
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background-color: var(--orange);
+            color: var(--white);
+            padding: 10px 20px;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--orange-light);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--orange);
+            border: 1px solid var(--orange);
+            padding: 10px 20px;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(255, 123, 37, 0.1);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: var(--dark-gray);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        .logo span {
+            color: var(--light-gray);
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 30px;
+        }
+
+        nav ul li a {
+            color: var(--light-gray);
+            font-weight: 500;
+        }
+
+        nav ul li a:hover {
+            color: var(--orange);
+        }
+
+        .auth-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            color: var(--light-gray);
+            font-size: 24px;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(26, 26, 26, 0.8), rgba(26, 26, 26, 0.9)), 
+                        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%232d2d2d"/><path d="M0 0L100 100M100 0L0 100" stroke="%234a4a4a" stroke-width="1"/></svg>');
+            background-size: cover;
+            text-align: center;
+            padding: 120px 0;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            color: var(--light-gray);
+        }
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        /* Features Section */
+        .features {
+            background-color: var(--dark-gray);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: var(--white);
+            margin-bottom: 15px;
+        }
+
+        .section-title p {
+            color: var(--light-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background-color: var(--dark);
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid var(--medium-gray);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--orange);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            color: var(--orange);
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+
+        /* How It Works Section */
+        .how-it-works {
+            background-color: var(--dark);
+        }
+
+        .steps {
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .step {
+            flex: 1;
+            min-width: 250px;
+            text-align: center;
+            padding: 30px 20px;
+        }
+
+        .step-number {
+            width: 60px;
+            height: 60px;
+            background-color: var(--orange);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0 auto 20px;
+        }
+
+        .step h3 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+
+        /* Shop Showcase */
+        .shop-showcase {
+            background-color: var(--dark-gray);
+        }
+
+        .shop-filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            background-color: var(--dark);
+            color: var(--light-gray);
+            padding: 8px 16px;
+            border-radius: 20px;
+            border: 1px solid var(--medium-gray);
+        }
+
+        .filter-btn.active {
+            background-color: var(--orange);
+            color: var(--white);
+            border-color: var(--orange);
+        }
+
+        .shops-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .shop-card {
+            background-color: var(--dark);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            border: 1px solid var(--medium-gray);
+        }
+
+        .shop-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--orange);
+        }
+
+        .shop-image {
+            height: 180px;
+            background-color: var(--medium-gray);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--light-gray);
+        }
+
+        .shop-info {
+            padding: 20px;
+        }
+
+        .shop-info h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--white);
+        }
+
+        .shop-category {
+            display: inline-block;
+            background-color: var(--medium-gray);
+            color: var(--light-gray);
+            padding: 4px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        .shop-rating {
+            color: var(--orange);
+            margin-bottom: 10px;
+        }
+
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(to right, var(--dark-gray), var(--dark));
+            text-align: center;
+            padding: 100px 0;
+        }
+
+        .cta h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 30px;
+            color: var(--light-gray);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-gray);
+            padding: 60px 0 30px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--white);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column ul li a {
+            color: var(--light-gray);
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--orange);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: var(--medium-gray);
+            border-radius: 50%;
+            color: var(--light-gray);
+        }
+
+        .social-links a:hover {
+            background-color: var(--orange);
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            border-top: 1px solid var(--medium-gray);
+            color: var(--light-gray);
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .header-container {
+                flex-wrap: wrap;
+            }
+
+            nav {
+                width: 100%;
+                margin-top: 20px;
+                display: none;
+            }
+
+            nav.active {
+                display: block;
+            }
+
+            nav ul {
+                flex-direction: column;
+            }
+
+            nav ul li {
+                margin: 10px 0;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .steps {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">Shop<span>Link</span></div>
+            <button class="mobile-menu-btn">☰</button>
+            <nav>
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#shops">Shops</a></li>
+                    <li><a href="#about">About</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="btn-secondary">Log In</button>
+                <button class="btn-primary">Sign Up</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Connecting Local Shops with Customers</h1>
+            <p>Discover amazing local businesses in your area and support your community while enjoying convenient shopping experiences.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary">Find Local Shops</button>
+                <button class="btn-secondary">Register Your Shop</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Why Choose ShopLink?</h2>
+                <p>We're building a bridge between local businesses and the community with features designed to benefit everyone.</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🛍️</div>
+                    <h3>Easy Discovery</h3>
+                    <p>Find local shops based on your preferences, location, and needs with our intuitive search and filtering system.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3>Mobile Friendly</h3>
+                    <p>Access our platform from any device - desktop, tablet, or smartphone for a seamless shopping experience.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚚</div>
+                    <h3>Delivery & Pickup</h3>
+                    <p>Choose between home delivery or in-store pickup options based on your convenience and shop preferences.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⭐</div>
+                    <h3>Ratings & Reviews</h3>
+                    <p>Make informed decisions with authentic customer reviews and ratings for all local shops.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+        <div class="container">
+            <div class="section-title">
+                <h2>How It Works</h2>
+                <p>Getting started with ShopLink is simple for both customers and shop owners.</p>
+            </div>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Sign Up</h3>
+                    <p>Create an account as a customer or shop owner with just a few details.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Explore or List</h3>
+                    <p>Browse local shops or list your business with products and services.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Connect & Shop</h3>
+                    <p>Find what you need, place orders, and support your local economy.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Showcase Section -->
+    <section class="shop-showcase" id="shops">
+        <div class="container">
+            <div class="section-title">
+                <h2>Featured Local Shops</h2>
+                <p>Discover some of the amazing local businesses in your community.</p>
+            </div>
+            <div class="shop-filters">
+                <button class="filter-btn active">All</button>
+                <button class="filter-btn">Food & Groceries</button>
+                <button class="filter-btn">Fashion</button>
+                <button class="filter-btn">Home & Garden</button>
+                <button class="filter-btn">Electronics</button>
+                <button class="filter-btn">Services</button>
+            </div>
+            <div class="shops-grid">
+                <div class="shop-card">
+                    <div class="shop-image">Shop Image</div>
+                    <div class="shop-info">
+                        <h3>Fresh Market Groceries</h3>
+                        <span class="shop-category">Food & Groceries</span>
+                        <div class="shop-rating">★★★★☆ (4.2)</div>
+                        <p>Fresh produce, dairy, and pantry items from local farms.</p>
+                    </div>
+                </div>
+                <div class="shop-card">
+                    <div class="shop-image">Shop Image</div>
+                    <div class="shop-info">
+                        <h3>Urban Threads Boutique</h3>
+                        <span class="shop-category">Fashion</span>
+                        <div class="shop-rating">★★★★★ (4.8)</div>
+                        <p>Trendy clothing and accessories for all ages.</p>
+                    </div>
+                </div>
+                <div class="shop-card">
+                    <div class="shop-image">Shop Image</div>
+                    <div class="shop-info">
+                        <h3>Green Thumb Garden Center</h3>
+                        <span class="shop-category">Home & Garden</span>
+                        <div class="shop-rating">★★★★☆ (4.5)</div>
+                        <p>Plants, gardening tools, and landscaping services.</p>
+                    </div>
+                </div>
+                <div class="shop-card">
+                    <div class="shop-image">Shop Image</div>
+                    <div class="shop-info">
+                        <h3>Tech Haven Electronics</h3>
+                        <span class="shop-category">Electronics</span>
+                        <div class="shop-rating">★★★★☆ (4.3)</div>
+                        <p>Latest gadgets, repairs, and tech accessories.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Support Local Businesses?</h2>
+            <p>Join thousands of customers and shop owners who are already part of our community.</p>
+            <div class="hero-buttons">
+                <button class="btn-primary">Get Started Today</button>
+                <button class="btn-secondary">Learn More</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>LocalShop Connect</h3>
+                    <p>Connecting local businesses with customers to build stronger communities.</p>
+                    <div class="social-links">
+                        <a href="#">f</a>
+                        <a href="#">t</a>
+                        <a href="#">in</a>
+                        <a href="#">ig</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>For Customers</h3>
+                    <ul>
+                        <li><a href="#">Find Local Shops</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>For Shop Owners</h3>
+                    <ul>
+                        <li><a href="#">Register Your Shop</a></li>
+                        <li><a href="#">Seller Dashboard</a></li>
+                        <li><a href="#">Pricing</a></li>
+                        <li><a href="#">Seller Resources</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Company</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Press</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 LocalShop Connect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu-btn').addEventListener('click', function() {
+            document.querySelector('nav').classList.toggle('active');
+        });
+
+        // Filter buttons functionality
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        filterButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                filterButtons.forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+                
+                // In a real application, this would filter the shop cards
+                // For this demo, we'll just log the filter
+                console.log(`Filtering by: ${this.textContent}`);
+            });
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                document.querySelector('nav').classList.remove('active');
+            });
+        });
+    </script>
+</body>
+</html>
