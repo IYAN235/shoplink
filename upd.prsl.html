@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ShopLink Seller Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #000000;
+      --text: #ffffff;
+      --accent: #ff7b25;
+      --accent-light: #ff9d5c;
+      --card: #111111;
+      --card-light: #1a1a1a;
+      --shadow: rgba(255, 123, 37, 0.3);
+      --gray-light: #e0e0e0;
+      --gray-medium: #888888;
+      --gray-dark: #2a2a2a;
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #f59e0b;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-weight: 400;
+      background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+      min-height: 100vh;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.8);
+      text-align: center;
+      padding: 2.5em 1.5em;
+      box-shadow: 0 4px 30px rgba(255, 123, 37, 0.2);
+      border-bottom: 1px solid var(--gray-dark);
+      backdrop-filter: blur(10px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    header h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--accent);
+      font-size: 2.5rem;
+      font-weight: 600;
+      letter-spacing: -0.5px;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 0 20px rgba(255, 123, 37, 0.3);
+    }
+
+    .header-subtitle {
+      font-family: 'Inter', sans-serif;
+      color: var(--accent-light);
+      font-size: 1.1rem;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+    }
+
+    .dashboard {
+      max-width: 1200px;
+      margin: 3em auto;
+      padding: 3em;
+      background: var(--card);
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(255, 123, 37, 0.15);
+      border: 1px solid var(--gray-dark);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dashboard::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .section {
+      margin-bottom: 3em;
+      padding: 2em;
+      background: var(--card-light);
+      border-radius: 16px;
+      border: 1px solid var(--gray-dark);
+      transition: all 0.3s ease;
+    }
+
+    .section:hover {
+      border-color: var(--accent);
+      box-shadow: 0 5px 20px rgba(255, 123, 37, 0.1);
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      color: var(--accent);
+      font-size: 1.8rem;
+      font-weight: 500;
+      margin-bottom: 1.5em;
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+    }
+
+    .form-group {
+      margin-bottom: 2em;
+      position: relative;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.75em;
+      font-weight: 500;
+      color: var(--gray-light);
+      font-size: 0.95rem;
+      letter-spacing: 0.3px;
+    }
+
+    .required::after {
+      content: '*';
+      color: var(--error);
+      margin-left: 4px;
+    }
+
+    input, textarea, select {
+      width: 100%;
+      padding: 1em 1.25em;
+      border-radius: 12px;
+      font-size: 1em;
+      font-family: 'Inter', sans-serif;
+      border: 1.5px solid var(--gray-dark);
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      transition: all 0.3s ease;
+      font-weight: 400;
+    }
+
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(255, 123, 37, 0.1);
+      background: rgba(255, 255, 255, 0.08);
+      transform: translateY(-2px);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: var(--gray-medium);
+      font-weight: 300;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5em;
+    }
+
+    @media (max-width: 768px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5em;
+      margin-top: 1.5em;
+    }
+
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--gray-dark);
+      border-radius: 12px;
+      padding: 1.5em;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-3px);
+      box-shadow: 0 5px 20px rgba(255, 123, 37, 0.1);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 0.25em;
+    }
+
+    .stat-label {
+      color: var(--gray-medium);
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+
+    .status-message {
+      padding: 1.25em 1.5em;
+      border-radius: 12px;
+      margin: 1.5em 0;
+      font-weight: 500;
+      display: none;
+      align-items: center;
+      gap: 0.75em;
+      animation: slideIn 0.4s ease;
+      backdrop-filter: blur(10px);
+    }
+
+    .status-message.success {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid var(--success);
+      color: var(--success);
+      display: flex;
+    }
+
+    .status-message.error {
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid var(--error);
+      color: var(--error);
+      display: flex;
+    }
+
+    .status-message.info {
+      background: rgba(255, 123, 37, 0.1);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      display: flex;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .button-group {
+      display: flex;
+      gap: 1.5em;
+      margin-top: 2em;
+      flex-wrap: wrap;
+    }
+
+    button {
+      padding: 1.25em 2.5em;
+      border: 1.5px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 1em;
+      letter-spacing: 0.3px;
+      flex: 1;
+      min-width: 200px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      transition: left 0.5s;
+    }
+
+    button:hover::before {
+      left: 100%;
+    }
+
+    button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px var(--shadow);
+      background-color: rgba(255, 123, 37, 0.1);
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-light));
+      color: var(--bg);
+      font-weight: 600;
+      box-shadow: 0 5px 15px rgba(255, 123, 37, 0.3);
+    }
+
+    button.primary:hover {
+      background: linear-gradient(135deg, var(--accent-light), var(--accent));
+      box-shadow: 0 10px 30px rgba(255, 123, 37, 0.4);
+      transform: translateY(-3px);
+    }
+
+    /* Dashboard Buttons Section */
+    .dashboard-buttons {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1.5em;
+      margin-top: 1.5em;
+    }
+
+    .dashboard-button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5em;
+      background: var(--card);
+      border: 1px solid var(--gray-dark);
+      border-radius: 12px;
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dashboard-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+      transition: left 0.5s;
+    }
+
+    .dashboard-button:hover::before {
+      left: 100%;
+    }
+
+    .dashboard-button:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px var(--shadow);
+      border-color: var(--accent);
+      background: rgba(255, 123, 37, 0.05);
+      color: var(--accent-light);
+    }
+
+    .dashboard-button i {
+      font-size: 2em;
+      margin-bottom: 0.5em;
+      transition: all 0.3s ease;
+    }
+
+    .dashboard-button:hover i {
+      transform: scale(1.1);
+    }
+
+    footer {
+      text-align: center;
+      padding: 3em 2em;
+      color: var(--gray-medium);
+      font-size: 0.85rem;
+      font-weight: 300;
+      letter-spacing: 0.5px;
+      border-top: 1px solid var(--gray-dark);
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      header {
+        padding: 2em 1em;
+      }
+      
+      header h1 {
+        font-size: 2rem;
+      }
+      
+      .dashboard {
+        margin: 1.5em;
+        padding: 2em;
+      }
+      
+      .button-group {
+        flex-direction: column;
+      }
+      
+      button {
+        min-width: 100%;
+      }
+
+      .section {
+        padding: 1.5em;
+      }
+
+      .dashboard-buttons {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      }
+    }
+
+    @media (max-width: 480px) {
+      header h1 {
+        font-size: 1.75rem;
+      }
+      
+      .dashboard {
+        margin: 1em;
+        padding: 1.5em;
+      }
+      
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .dashboard-buttons {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Seller Dashboard – ShopLink</h1>
+    <div class="header-subtitle">Manage your business and explore selling opportunities</div>
+  </header>
+
+  <div class="dashboard">
+    <div id="statusMessage" class="status-message"></div>
+
+    <div class="section">
+      <h2><i class="fas fa-user-circle"></i> Seller Profile</h2>
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label for="shopName" class="required">Shop Name</label>
+          <input type="text" id="shopName" placeholder="e.g. Urban Threads" />
+        </div>
+
+        <div class="form-group">
+          <label for="shopCategory" class="required">Primary Category</label>
+          <select id="shopCategory">
+            <option>Select your main category</option>
+            <option>Fashion & Apparel</option>
+            <option>Electronics & Gadgets</option>
+            <option>Beauty & Wellness</option>
+            <option>Home & Living</option>
+            <option>Food & Groceries</option>
+            <option>Books & Learning</option>
+            <option>Pets & Supplies</option>
+            <option>Services</option>
+            <option>Crafts & Art</option>
+            <option>Tech & Tools</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="shopDescription" class="required">Shop Description</label>
+        <textarea id="shopDescription" rows="4" placeholder="Tell customers about your business, values, and what makes you unique..."></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="shopTags">Category Tags</label>
+        <input type="text" id="shopTags" placeholder="e.g. fashion, local, sustainable, handmade" />
+      </div>
+
+      <div class="button-group">
+        <button class="primary" onclick="saveProfile()">
+          <i class="fas fa-save"></i> Save Profile
+        </button>
+        <button onclick="resetProfile()">
+          <i class="fas fa-undo"></i> Reset Form
+        </button>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><i class="fas fa-chart-bar"></i> Quick Stats</h2>
+      
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Active Listings</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Total Sales</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">0</div>
+          <div class="stat-label">Store Views</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">0%</div>
+          <div class="stat-label">Conversion Rate</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Seller Dashboard Buttons -->
+    <div class="section">
+      <h2><i class="fas fa-rocket"></i> Quick Access</h2>
+      <p style="color: var(--gray-medium); margin-bottom: 1.5em;">Direct access to your refined shop categories</p>
+      
+      <div class="dashboard-buttons">
+        <a href="beauty_refined.html" class="dashboard-button">
+          <i class="fas fa-spa"></i>
+          Beauty
+        </a>
+        <a href="books_refined.html" class="dashboard-button">
+          <i class="fas fa-book"></i>
+          Books
+        </a>
+        <a href="craft_refined.html" class="dashboard-button">
+          <i class="fas fa-palette"></i>
+          Crafts
+        </a>
+        <a href="electronic_refined.html" class="dashboard-button">
+          <i class="fas fa-laptop"></i>
+          Electronics
+        </a>
+        <a href="food_refined.html" class="dashboard-button">
+          <i class="fas fa-utensils"></i>
+          Food
+        </a>
+        <a href="pets_refined.html" class="dashboard-button">
+          <i class="fas fa-paw"></i>
+          Pets
+        </a>
+        <a href="refined_fashion.html" class="dashboard-button">
+          <i class="fas fa-tshirt"></i>
+          Fashion
+        </a>
+        <a href="refined_home.html" class="dashboard-button">
+          <i class="fas fa-home"></i>
+          Home
+        </a>
+        <a href="service_refined.html" class="dashboard-button">
+          <i class="fas fa-tools"></i>
+          Services
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 ShopLink. Powered by SK Studio & SAS.
+  </footer>
+
+  <script>
+    function showStatus(message, type) {
+      const statusElement = document.getElementById('statusMessage');
+      const icon = type === 'success' ? 'fa-check-circle' : 
+                   type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle';
+      
+      statusElement.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+      statusElement.className = 'status-message ' + type;
+      
+      // Auto-hide success messages after 5 seconds
+      if (type === 'success') {
+        setTimeout(() => {
+          statusElement.style.display = 'none';
+        }, 5000);
+      }
+    }
+
+    function saveProfile() {
+      const shopName = document.getElementById('shopName').value.trim();
+      const shopCategory = document.getElementById('shopCategory').value;
+      const shopDescription = document.getElementById('shopDescription').value.trim();
+
+      if (!shopName || shopCategory === 'Select your main category' || !shopDescription) {
+        showStatus('Please fill in all required fields', 'error');
+        return;
+      }
+
+      // In a real application, you would save the profile data to a server here
+      showStatus('✅ Profile saved successfully! Your shop information has been updated.', 'success');
+    }
+
+    function resetProfile() {
+      document.getElementById('shopName').value = '';
+      document.getElementById('shopCategory').value = 'Select your main category';
+      document.getElementById('shopDescription').value = '';
+      document.getElementById('shopTags').value = '';
+      showStatus('Form has been reset', 'info');
+    }
+
+    // Show welcome message on page load
+    window.addEventListener('load', () => {
+      showStatus('👋 Welcome to your Seller Dashboard! Complete your profile to get started.', 'info');
+    });
+  </script>
+
+</body>
+</html>
