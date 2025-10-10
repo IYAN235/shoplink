@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Success - ShopLink</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000000;
+      font-family: 'IBM Plex Sans', sans-serif;
+      color: #ffffff;
+      scroll-behavior: smooth;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    #shoplink-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #000000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(255, 123, 37, 0.5);
+    }
+
+    #shoplink-header h1 {
+      font-size: 1.8rem;
+      font-family: 'Space Grotesk', sans-serif;
+      margin: 0;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px #ff7b25;
+    }
+
+    #shoplink-header h1 span:last-child {
+      color: #ff7b25;
+      position: relative;
+    }
+
+    #shoplink-header h1 span:last-child::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      height: 4px;
+      width: 100%;
+      background-color: #ff7b25;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-link {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: 4px;
+      transition: color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      font-size: 14px;
+    }
+
+    .nav-link:hover {
+      color: #ff7b25;
+      box-shadow: 0 0 10px #ff7b25;
+      transform: translateY(-2px);
+      background-color: rgba(255, 123, 37, 0.1);
+    }
+
+    .nav-link.active {
+      color: #ff7b25;
+      font-weight: 600;
+    }
+
+    /* Main Content */
+    .main-content {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 0;
+    }
+
+    /* Success Container */
+    .success-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+      background: #111111;
+      border-radius: 8px;
+      padding: 50px;
+      box-shadow: 0 0 20px rgba(255, 123, 37, 0.4);
+      border: 1px solid #ff7b25;
+      text-align: center;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      color: #33ff77;
+      margin-bottom: 30px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    .success-container h2 {
+      font-size: 2.5rem;
+      font-family: 'Space Grotesk', sans-serif;
+      margin-bottom: 20px;
+      color: #33ff77;
+    }
+
+    .success-container p {
+      font-size: 1.2rem;
+      color: #cccccc;
+      margin-bottom: 30px;
+    }
+
+    .redirect-countdown {
+      font-size: 1rem;
+      color: #ff7b25;
+      margin-top: 20px;
+    }
+
+    .progress-bar {
+      width: 100%;
+      height: 6px;
+      background-color: #333333;
+      border-radius: 3px;
+      margin-top: 20px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background-color: #33ff77;
+      border-radius: 3px;
+      transition: width 5s linear;
+    }
+
+    .btn {
+      padding: 12px 24px;
+      border-radius: 4px;
+      font-weight: 500;
+      text-decoration: none;
+      background-color: transparent;
+      color: #ff7b25;
+      border: 1px solid #ff7b25;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: inline-block;
+      text-align: center;
+      font-size: 14px;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 0 14px #ff7b25;
+      background-color: rgba(255, 123, 37, 0.1);
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      #shoplink-header {
+        flex-wrap: wrap;
+        padding: 10px 15px;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      nav {
+        width: 100%;
+        display: none;
+        margin-top: 15px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      .nav-link {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid #2a2a2a;
+      }
+
+      .success-container {
+        padding: 30px 20px;
+      }
+
+      .success-container h2 {
+        font-size: 2rem;
+      }
+
+      .success-container p {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #shoplink-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .success-container h2 {
+        font-size: 1.8rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <div id="shoplink-header">
+    <h1><span>SHOP</span><span>LINK</span></h1>
+
+    <button class="mobile-menu-toggle" id="menuToggle">☰</button>
+
+    <nav id="mainNav">
+      <a href="https://iyan235.github.io/shoplink/index.html" class="nav-link">Home</a>
+      <a href="https://iyan235.github.io/shoplink/index.html#segments" class="nav-link">Features</a>
+      <a href="https://iyan235.github.io/shoplink/index.html#tutorial" class="nav-link">Tutorial</a>
+      <a href="https://iyan235.github.io/shoplink/index.html#shopcards" class="nav-link">Shop Categories</a>
+    </nav>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <div class="success-container">
+        <div class="success-icon">✓</div>
+        <h2>Successfully Signed In!</h2>
+        <p>Welcome back to ShopLink. You're being redirected to your account.</p>
+        
+        <div class="progress-bar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        
+        <div class="redirect-countdown" id="countdown">
+          Redirecting in <span id="countdown-number">5</span> seconds...
+        </div>
+        
+        <a href="https://example.com" class="btn">Go Now</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('menuToggle').addEventListener('click', function() {
+      const nav = document.getElementById('mainNav');
+      nav.classList.toggle('active');
+    });
+
+    // Countdown and redirect functionality
+    let countdown = 5;
+    const countdownElement = document.getElementById('countdown-number');
+    const progressFill = document.getElementById('progressFill');
+    
+    // Start the progress bar animation
+    progressFill.style.width = '100%';
+    
+    // Update countdown every second
+    const countdownInterval = setInterval(function() {
+      countdown--;
+      countdownElement.textContent = countdown;
+      
+      if (countdown <= 0) {
+        clearInterval(countdownInterval);
+        window.location.href = 'https://example.com';
+      }
+    }, 1000);
+    
+    // Optional: Allow user to skip the countdown
+    document.querySelector('.btn').addEventListener('click', function() {
+      clearInterval(countdownInterval);
+      window.location.href = 'https://example.com';
+    });
+  </script>
+</body>
+</html>
