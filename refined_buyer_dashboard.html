@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buyer Dashboard – ShopLink</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Base Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #000000;
+      font-family: 'IBM Plex Sans', sans-serif;
+      color: #ffffff;
+      scroll-behavior: smooth;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header */
+    #shoplink-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: #000000;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 20px;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(255, 123, 37, 0.5);
+    }
+
+    #shoplink-header h1 {
+      font-size: 1.8rem;
+      font-family: 'Space Grotesk', sans-serif;
+      margin: 0;
+      letter-spacing: 1px;
+      text-shadow: 0 0 10px #ff7b25;
+    }
+
+    #shoplink-header h1 span:last-child {
+      color: #ff7b25;
+      position: relative;
+    }
+
+    #shoplink-header h1 span:last-child::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      height: 4px;
+      width: 100%;
+      background-color: #ff7b25;
+    }
+
+    /* Mobile Menu */
+    .mobile-menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: #ffffff;
+      font-size: 24px;
+      cursor: pointer;
+      padding: 5px;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-link {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: 500;
+      padding: 6px 10px;
+      border-radius: 4px;
+      transition: color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+      font-size: 14px;
+    }
+
+    .nav-link:hover {
+      color: #ff7b25;
+      box-shadow: 0 0 10px #ff7b25;
+      transform: translateY(-2px);
+      background-color: rgba(255, 123, 37, 0.1);
+    }
+
+    .nav-link.active {
+      color: #ff7b25;
+      font-weight: 600;
+    }
+
+    /* Page Header */
+    .page-header {
+      text-align: center;
+      padding: 60px 20px 40px;
+      background: linear-gradient(135deg, rgba(255, 123, 37, 0.1) 0%, transparent 100%);
+      border-bottom: 1px solid #222;
+    }
+
+    .page-header h1 {
+      font-size: 2.5rem;
+      font-family: 'Space Grotesk', sans-serif;
+      margin-bottom: 15px;
+      color: #ff7b25;
+      text-shadow: 0 0 15px rgba(255, 123, 37, 0.5);
+    }
+
+    .page-header p {
+      font-size: 1.1rem;
+      color: #cccccc;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Main Content */
+    .main-content {
+      padding: 40px 0 80px;
+    }
+
+    /* Dashboard Grid */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+
+    /* Dashboard Card */
+    .dashboard-card {
+      background-color: #111111;
+      border: 1px solid #333333;
+      border-radius: 8px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .dashboard-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff7b25, #ff9d5c);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(255, 123, 37, 0.2);
+      border-color: #ff7b25;
+    }
+
+    .dashboard-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #333;
+    }
+
+    .card-header i {
+      font-size: 1.5rem;
+      color: #ff7b25;
+    }
+
+    .card-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      color: #ff7b25;
+      margin: 0;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+      color: #cccccc;
+    }
+
+    .required::after {
+      content: '*';
+      color: #ff3333;
+      margin-left: 4px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      background-color: #000000;
+      border: 1px solid #333333;
+      border-radius: 4px;
+      font-size: 16px;
+      color: #ffffff;
+      transition: all 0.3s;
+      font-family: 'IBM Plex Sans', sans-serif;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #ff7b25;
+      box-shadow: 0 0 0 3px rgba(255, 123, 37, 0.2);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 15px;
+    }
+
+    .stat-card {
+      background: #000000;
+      border: 1px solid #333;
+      border-radius: 6px;
+      padding: 20px 15px;
+      text-align: center;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: #ff7b25;
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(255, 123, 37, 0.1);
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ff7b25;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: #cccccc;
+      font-size: 0.85rem;
+    }
+
+    /* Quick Access */
+    .quick-access-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+    }
+
+    .access-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 25px 15px;
+      background: #000000;
+      border: 1px solid #333;
+      border-radius: 6px;
+      color: #ff7b25;
+      text-decoration: none;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .access-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(255, 123, 37, 0.2);
+      border-color: #ff7b25;
+      background: rgba(255, 123, 37, 0.05);
+    }
+
+    .access-card i {
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .access-card span {
+      font-size: 0.9rem;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-weight: 500;
+      text-decoration: none;
+      background-color: transparent;
+      color: #ff7b25;
+      border: 1px solid #ff7b25;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      gap: 8px;
+      font-family: 'IBM Plex Sans', sans-serif;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(255, 123, 37, 0.3);
+      background-color: rgba(255, 123, 37, 0.1);
+    }
+
+    .btn-primary {
+      background-color: #ff7b25;
+      color: #000000;
+    }
+
+    .btn-primary:hover {
+      background-color: #ff8d3f;
+      box-shadow: 0 5px 15px rgba(255, 123, 37, 0.5);
+    }
+
+    .btn-secondary {
+      border-color: #666;
+      color: #cccccc;
+    }
+
+    .btn-secondary:hover {
+      border-color: #ff7b25;
+      color: #ff7b25;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+    }
+
+    /* Footer */
+    footer {
+      background-color: #0d0d0d;
+      padding: 40px 20px 20px;
+      border-top: 1px solid #222;
+      width: 100%;
+    }
+
+    .footer-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .footer-section h3 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      color: #ff7b25;
+      margin-bottom: 20px;
+    }
+
+    .footer-section h4 {
+      color: #ff7b25;
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+    }
+
+    .footer-section p {
+      color: #cccccc;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .footer-section ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      line-height: 2;
+    }
+
+    .footer-section li {
+      margin-bottom: 8px;
+    }
+
+    .footer-section a {
+      color: #cccccc;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer-section a:hover {
+      color: #ff7b25;
+    }
+
+    .copyright {
+      margin-top: 40px;
+      text-align: center;
+      padding-top: 20px;
+      border-top: 1px solid #222;
+    }
+
+    .copyright p {
+      color: #999999;
+      font-size: 0.85rem;
+    }
+
+    /* Mobile Responsive Styles */
+    @media (max-width: 768px) {
+      #shoplink-header {
+        flex-wrap: wrap;
+        padding: 10px 15px;
+      }
+
+      .mobile-menu-toggle {
+        display: block;
+      }
+
+      nav {
+        width: 100%;
+        display: none;
+        margin-top: 15px;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      nav.active {
+        display: flex;
+      }
+
+      .nav-link {
+        display: block;
+        padding: 10px;
+        border-bottom: 1px solid #2a2a2a;
+      }
+
+      .page-header {
+        padding: 40px 20px 30px;
+      }
+
+      .page-header h1 {
+        font-size: 2rem;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-access-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .button-group {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #shoplink-header h1 {
+        font-size: 1.5rem;
+      }
+
+      .page-header h1 {
+        font-size: 1.8rem;
+      }
+
+      .card-header h2 {
+        font-size: 1.3rem;
+      }
+
+      .quick-access-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header -->
+  <div id="shoplink-header">
+    <h1><span>SHOP</span><span>LINK</span></h1>
+
+    <button class="mobile-menu-toggle" id="menuToggle">☰</button>
+
+    <nav id="mainNav">
+      <a href="https://iyan235.github.io/shoplink/index.html" class="nav-link">Home</a>
+      <a href="#" class="nav-link">Products</a>
+      <a href="#" class="nav-link">Categories</a>
+      <a href="#" class="nav-link active">Dashboard</a>
+    </nav>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Buyer Dashboard</h1>
+      <p>Manage your profile, track orders, and explore your shopping activity</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <div class="container">
+      <div class="dashboard-grid">
+        <!-- Buyer Profile Card -->
+        <div class="dashboard-card">
+          <div class="card-header">
+            <i class="fas fa-user"></i>
+            <h2>Buyer Profile</h2>
+          </div>
+          
+          <div class="form-group">
+            <div class="form-row">
+              <div>
+                <label for="buyerName" class="required">Full Name</label>
+                <input type="text" id="buyerName" placeholder="e.g. Shanajan Raj" />
+              </div>
+              <div>
+                <label for="buyerEmail" class="required">Email Address</label>
+                <input type="email" id="buyerEmail" placeholder="e.g. shanajan@email.com" />
+              </div>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="buyerAddress" class="required">Delivery Address</label>
+            <textarea id="buyerAddress" rows="3" placeholder="Street, City, District, Postal Code"></textarea>
+          </div>
+          
+          <div class="button-group">
+            <button class="btn btn-primary" onclick="saveBuyerProfile()">
+              <i class="fas fa-save"></i> Save Profile
+            </button>
+            <button class="btn btn-secondary" onclick="resetBuyerProfile()">
+              <i class="fas fa-redo"></i> Reset
+            </button>
+          </div>
+        </div>
+
+        <!-- Activity Stats Card -->
+        <div class="dashboard-card">
+          <div class="card-header">
+            <i class="fas fa-chart-line"></i>
+            <h2>Your Activity</h2>
+          </div>
+          
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value">3</div>
+              <div class="stat-label">Orders Placed</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">2</div>
+              <div class="stat-label">Orders Delivered</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">5</div>
+              <div class="stat-label">Wishlist Items</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">1</div>
+              <div class="stat-label">Pending Review</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Access Card -->
+        <div class="dashboard-card">
+          <div class="card-header">
+            <i class="fas fa-shopping-cart"></i>
+            <h2>Quick Access</h2>
+          </div>
+          
+          <p style="color: #cccccc; margin-bottom: 20px; font-size: 0.95rem;">
+            Navigate your buyer tools and features
+          </p>
+          
+          <div class="quick-access-grid">
+            <a href="orders.html" class="access-card">
+              <i class="fas fa-box"></i>
+              <span>My Orders</span>
+            </a>
+            <a href="wishlist.html" class="access-card">
+              <i class="fas fa-heart"></i>
+              <span>Wishlist</span>
+            </a>
+            <a href="reviews.html" class="access-card">
+              <i class="fas fa-star"></i>
+              <span>Reviews</span>
+            </a>
+            <a href="support.html" class="access-card">
+              <i class="fas fa-headset"></i>
+              <span>Support</span>
+            </a>
+            <a href="settings.html" class="access-card">
+              <i class="fas fa-cog"></i>
+              <span>Settings</span>
+            </a>
+            <a href="https://iyan235.github.io/shoplink/index.html" class="access-card">
+              <i class="fas fa-home"></i>
+              <span>Home</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-container">
+        <!-- Column 1: Manifesto -->
+        <div class="footer-section">
+          <h3>ShopLink</h3>
+          <p>
+            This isn't a marketplace. It's a system. Built for creators, scaled for clarity. Every segment, every signal—locked in with rhythm and intent.
+          </p>
+        </div>
+
+        <!-- Column 2: Navigation -->
+        <div class="footer-section">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="https://iyan235.github.io/shoplink/index.html">Home</a></li>
+            <li><a href="https://iyan235.github.io/shoplink/index.html#segments">Features</a></li>
+            <li><a href="https://iyan235.github.io/shoplink/index.html#tutorial">Tutorial</a></li>
+            <li><a href="https://iyan235.github.io/shoplink/index.html#shopcards">Shop Categories</a></li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Signal -->
+        <div class="footer-section">
+          <h4>Signal</h4>
+          <p>
+            Built by <strong>SK – Studio</strong> & <strong>SAS</strong><br>
+            Location: Northern Province, Sri Lanka<br>
+            Status: Online
+          </p>
+        </div>
+      </div>
+
+      <!-- Attribution -->
+      <div class="copyright">
+        <p>
+          &copy; 2025 ShopLink. All Rights Reserved. &nbsp; | &nbsp; Terms &nbsp; | &nbsp; Privacy &nbsp; | &nbsp; Cookies
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    document.getElementById('menuToggle').addEventListener('click', function() {
+      const nav = document.getElementById('mainNav');
+      nav.classList.toggle('active');
+    });
+
+    // Buyer profile functions
+    function saveBuyerProfile() {
+      const name = document.getElementById('buyerName').value.trim();
+      const email = document.getElementById('buyerEmail').value.trim();
+      const address = document.getElementById('buyerAddress').value.trim();
+
+      if (!name || !email || !address) {
+        showToast('Please fill in all required fields', 'error');
+        return;
+      }
+
+      showToast('Buyer profile saved successfully!', 'success');
+    }
+
+    function resetBuyerProfile() {
+      document.getElementById('buyerName').value = '';
+      document.getElementById('buyerEmail').value = '';
+      document.getElementById('buyerAddress').value = '';
+      showToast('Form has been reset', 'info');
+    }
+
+    // Toast notification function
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      const bgColor = type === 'error' ? '#ff3333' : type === 'success' ? '#33ff77' : '#ff7b25';
+      
+      toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #111;
+        color: ${bgColor};
+        padding: 15px 20px;
+        border-radius: 4px;
+        border: 1px solid ${bgColor};
+        box-shadow: 0 5px 15px rgba(255, 123, 37, 0.3);
+        z-index: 1000;
+        font-weight: 500;
+        animation: slideIn 0.3s ease;
+        max-width: 300px;
+      `;
+      
+      const icon = type === 'error' ? 'fa-exclamation-circle' : 
+                   type === 'success' ? 'fa-check-circle' : 'fa-info-circle';
+      
+      toast.innerHTML = `<i class="fas ${icon}"></i> ${message}`;
+      document.body.appendChild(toast);
+      
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 3000);
+    }
+
+    // Add CSS animations
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      
+      @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
